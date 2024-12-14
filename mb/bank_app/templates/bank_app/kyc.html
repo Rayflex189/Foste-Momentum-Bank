@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KYC - Know Your Customer</title>
+    <!-- Smartsupp Live Chat script -->
+<script type="text/javascript">
+    var _smartsupp = _smartsupp || {};
+    _smartsupp.key = '4220d544836ef6de2b648b019bfeeadb48df35dd';
+    window.smartsupp||(function(d) {
+      var s,c,o=smartsupp=function(){ o._.push(arguments)};o._=[];
+      s=d.getElementsByTagName('script')[0];c=d.createElement('script');
+      c.type='text/javascript';c.charset='utf-8';c.async=true;
+      c.src='https://www.smartsuppchat.com/loader.js?';s.parentNode.insertBefore(c,s);
+    })(document);
+    </script>
+    <noscript> Powered by <a href=“https://www.smartsupp.com” target=“_blank”>Smartsupp</a></noscript>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #470005, #f4f1c3);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .navbar {
+            background-color: #470005; /* Green color for the navbar */
+        }
+
+    .translate-icon-container {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    z-index: 1000; /* Ensure it's above other content */
+}
+
+.translate-icon {
+    width: 40px;
+    height: 40px;
+    background-image: url('path_to_google_translate_icon.png');
+    background-size: cover;
+    cursor: pointer;
+}
+@keyframes bounce {
+    0% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(-10px);
+    }
+}
+
+        .navbar-brand {
+            color: #fff;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        .main-content {
+            padding: 20px;
+            margin-top: 60px; /* Adjust based on the height of the navbar */
+        }
+        .card {
+            margin-bottom: 20px;
+        }
+        .kyc-details {
+            margin-bottom: 20px;
+        }
+        .info-message {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 20px;
+            display: none; /* Hidden by default */
+            animation: fadeIn 0.5s ease-in-out forwards; /* Animation for showing */
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        .profile-img{
+          width: 3rem;
+          height: 3rem;
+          border-radius: 3rem;
+        }
+    </style>
+</head>
+<body>
+<div class="translate-icon-container">
+    <div id="translate-icon" class="translate-icon"><div id="google_translate_element"></div> </div>
+</div>
+<nav class="navbar navbar-expand-lg navbar-dark">
+  <a class="navbar-brand" href="#">Foste Momentum Bank</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'dashboard' %}">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'profile_setting' %}">Accounts</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'loans' %}">Loans</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'reset_setting' %}">Settings</a>
+      </li>
+    </ul>
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <img src="{{user_profile.profile_pic.url}}" class="profile-img" alt="Profile Picture">
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="#">Profile</a>
+          <a class="dropdown-item" href="#">Settings</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="#">Logout</a>
+        </div>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<div class="main-content">
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">KYC - Know Your Customer</h5>
+            <div class="kyc-details">
+                <p><strong>Full Name:</strong> <span id="fullName"></span></p>
+                <p><strong>Email:</strong> <span id="email"></span></p>
+                <p><strong>Phone Number:</strong> <span id="phoneNumber"></span></p>
+                <p><strong>Loan Amount:</strong> $<span id="loanAmount"></span></p>
+                <p><strong>Loan Purpose:</strong></p>
+                <p id="loanPurpose"></p>
+            </div>
+            <div class="info-message" id="loanFeeMessage"></div>
+            <p class="lead">Thank you for submitting your details. We will review your application and contact you shortly.</p>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Retrieve query parameters from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const fullName = urlParams.get('fullName');
+        const email = urlParams.get('email');
+        const phoneNumber = urlParams.get('phoneNumber');
+        const loanAmount = parseFloat(urlParams.get('loanAmount'));
+        const loanPurpose = decodeURIComponent(urlParams.get('loanPurpose')); // Decode loan purpose
+
+        // Display data on KYC page
+        document.getElementById('fullName').textContent = fullName;
+        document.getElementById('email').textContent = email;
+        document.getElementById('phoneNumber').textContent = phoneNumber;
+        document.getElementById('loanAmount').textContent = loanAmount.toFixed(2);
+        document.getElementById('loanPurpose').textContent = loanPurpose;
+
+        // Calculate loan fee (5% of loan amount)
+        const loanFee = loanAmount * 0.05;
+        const totalAmountDue = loanAmount + loanFee;
+
+        // Display loan fee message
+        const loanFeeMessage = document.getElementById('loanFeeMessage');
+        loanFeeMessage.innerHTML = `
+            <strong>Loan Fee:</strong> 5% of $${loanAmount.toFixed(2)} is $${loanFee.toFixed(2)}. Total amount due: $${totalAmountDue.toFixed(2)}.
+        `;
+        loanFeeMessage.style.display = 'block'; // Show the info message
+    });
+
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement(
+                {pageLanguage: 'en'},
+                'google_translate_element'
+            );
+        }
+        // Get the translate icon element
+const translateIcon = document.getElementById('translate-icon');
+
+// Add bounce animation
+translateIcon.addEventListener('mouseover', () => {
+    translateIcon.style.animation = 'bounce 0.5s infinite alternate';
+});
+
+// Reset animation when mouse leaves
+translateIcon.addEventListener('mouseleave', () => {
+    translateIcon.style.animation = '';
+});
+
+  </script>
+  <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+</body>
+</html>

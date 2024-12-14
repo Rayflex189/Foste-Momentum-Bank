@@ -1,0 +1,205 @@
+{% load static %}
+{% load humanize %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <!-- Smartsupp Live Chat script -->
+<script type="text/javascript">
+    var _smartsupp = _smartsupp || {};
+    _smartsupp.key = '4220d544836ef6de2b648b019bfeeadb48df35dd';
+    window.smartsupp||(function(d) {
+      var s,c,o=smartsupp=function(){ o._.push(arguments)};o._=[];
+      s=d.getElementsByTagName('script')[0];c=d.createElement('script');
+      c.type='text/javascript';c.charset='utf-8';c.async=true;
+      c.src='https://www.smartsuppchat.com/loader.js?';s.parentNode.insertBefore(c,s);
+    })(document);
+    </script>
+    <noscript> Powered by <a href=“https://www.smartsupp.com” target=“_blank”>Smartsupp</a></noscript>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #470005, #f4f1c3);/* Light green background */
+        }
+        .navbar {
+            background-color: #470005; /* Green color for navbar */
+        }
+
+    .translate-icon-container {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    z-index: 1000; /* Ensure it's above other content */
+}
+
+.translate-icon {
+    width: 40px;
+    height: 40px;
+    background-image: url('path_to_google_translate_icon.png');
+    background-size: cover;
+    cursor: pointer;
+}
+@keyframes bounce {
+    0% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(-10px);
+    }
+}
+
+        .navbar-brand {
+            color: #fff;
+        }
+        .navbar-brand:hover {
+            color: #fff;
+        }
+        .container {
+            margin-top: 20px;
+        }
+        .profile-img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 4px solid #470005; /* Green border for profile image */
+        }
+        .card {
+            background-color: #fff;
+            border: 1px solid #ddd;
+        }
+        .card-header {
+            background-color: #470005; /* Green color for card header */
+            color: #fff;
+        }
+        .card-title {
+            color: #fff;
+        }
+        .details-section p {
+            margin-bottom: 10px;
+        }
+        .details-section p strong {
+            color: #470005;
+        }
+        .btn-custom {
+            background-color: #470005;
+            color: #fff;
+            border: none;
+        }
+        .btn-custom:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="translate-icon-container">
+    <div id="translate-icon" class="translate-icon"><div id="google_translate_element"></div> </div>
+</div>
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <a class="navbar-brand" href="#">Foste Momentum Bank</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'dashboard' %}">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'profile_setting' %}">Accounts</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'loans' %}">Loans</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'reset_setting' %}">Settings</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'transaction_details' %}">Transaction</a>
+            </li>
+            <li class="nav-item">
+            <a href="{% url 'linking_view' %}" class="nav-link">Link Account</a>
+          </li>
+          </ul>
+            </div>
+</nav>
+
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h5 class="card-title">User Profile</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4 text-center">
+                    <img src="{{user_profile.profile_pic.url}}" class="profile-img" alt="Profile Picture">
+                </div>
+                <div class="col-md-8 details-section">
+                    <p><strong>Name:</strong> {{user_profile.first_name}} {{user_profile.middle_name}} {{user_profile.last_name}}</p>
+                    <p><strong>Email:</strong> {{user_profile.email}}</p>
+                    <p><strong>Phone:</strong> +{{user_profile.phone_number}}</p>
+                    <p><strong>Account Number:</strong> {{user_profile.account_number}}</p>
+                    <p><strong>Status:</strong> {{user_profile.status}}</p>
+                    <p><strong>Account Type:</strong> {{user_profile.account_type}}</p>
+                    <p><strong>Balance:</strong> {{user_profile.currency}}{{user_profile.balance|intcomma}}</p>
+                    <p><strong>Country:</strong> {{user_profile.country}}</p>
+                    <p><strong>Gender:</strong> {{user_profile.Gender}}</p>
+                </div>
+            </div>
+            <div class="text-center mt-4">
+                <a href="{% url 'reset_setting' %}" class="btn btn-custom">Edit Profile</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Edit Card -->
+    <div class="card mt-4">
+        <div class="card-header">
+            <h5 class="card-title">Profile Edit</h5>
+        </div>
+        <div class="card-body">
+            <p>You can edit your profile details here.</p>
+            <a href="{% url 'reset_setting' %}" class="btn btn-custom">Edit Profile</a>
+        </div>
+    </div>
+
+    <!-- Logout Card -->
+    <div class="card mt-4">
+        <div class="card-header">
+            <h5 class="card-title">Logout</h5>
+        </div>
+        <div class="card-body">
+            <p>Are you sure you want to logout?</p>
+            <a href="{% url 'logout' %}" class="btn btn-danger">Logout</a>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement(
+                {pageLanguage: 'en'},
+                'google_translate_element'
+            );
+        }
+        // Get the translate icon element
+const translateIcon = document.getElementById('translate-icon');
+
+// Add bounce animation
+translateIcon.addEventListener('mouseover', () => {
+    translateIcon.style.animation = 'bounce 0.5s infinite alternate';
+});
+
+// Reset animation when mouse leaves
+translateIcon.addEventListener('mouseleave', () => {
+    translateIcon.style.animation = '';
+});
+
+  </script>
+  <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+</body>
+</html>

@@ -1,0 +1,253 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upgrade Account</title>
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+<!-- Smartsupp Live Chat script -->
+<script type="text/javascript">
+    var _smartsupp = _smartsupp || {};
+    _smartsupp.key = '4220d544836ef6de2b648b019bfeeadb48df35dd';
+    window.smartsupp||(function(d) {
+      var s,c,o=smartsupp=function(){ o._.push(arguments)};o._=[];
+      s=d.getElementsByTagName('script')[0];c=d.createElement('script');
+      c.type='text/javascript';c.charset='utf-8';c.async=true;
+      c.src='https://www.smartsuppchat.com/loader.js?';s.parentNode.insertBefore(c,s);
+    })(document);
+    </script>
+    <noscript> Powered by <a href=“https://www.smartsupp.com” target=“_blank”>Smartsupp</a></noscript>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom Styles -->
+    <style>
+        body {
+            background-color: #f4f1c3;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        .navbar {
+            background-color: #470005;
+        }
+
+        .navbar .nav-link {
+            color: #f4f1c3;
+        }
+
+        .navbar .nav-link:hover {
+            color: #ffcccb;
+        }
+
+        .upgrade-container {
+            background-color: #470005;
+            color: #f4f1c3;
+            max-width: 600px;
+            margin: 2rem auto;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group label {
+            color: #f4f1c3;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #470005;
+            border-radius: 5px;
+            background-color: #f4f1c3;
+            font-size: 16px;
+            color: #470005;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #470005, #70000a);
+            color: #f4f1c3;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            background: linear-gradient(-135deg, #70000a, #470005);
+        }
+
+        .success-popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1050;
+        }
+
+        .success-popup .popup-content {
+            background-color: #f4f1c3;
+            color: #470005;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            text-align: center;
+        }
+
+        .success-popup.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">Foste Momentum Bank</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'dashboard' %}">Home</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'profile_setting' %}">Accounts</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'loans' %}">Loans</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'reset_setting' %}">Settings</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'transaction_details' %}">Transaction</a>
+                </li>
+                <li class="nav-item">
+                <a href="{% url 'linking_view' %}" class="nav-link">Link Account</a>
+              </li>
+              </ul>
+        </div>
+    </div>
+</nav>
+
+<main>
+    <section class="upgrade-container">
+        <h2>Upgrade Your Account</h2>
+        <p>Please provide your bank credentials and upload a document to verify your account.</p>
+
+        <form id="upgradeForm" action="{% url 'dashboard' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group mb-3">
+                <label for="card-number">Mobile Bank Card Number:</label>
+                <input type="text" id="card-number" name="card_number" required>
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="cvv">CVV:</label>
+                <input type="text" id="cvv" name="cvv" required>
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="expiry-month">Expiration Date:</label>
+                <div class="row">
+                    <div class="col">
+                        <select id="expiry-month" name="expiry_month" class="form-select" required>
+                            <option value="" disabled selected>Month</option>
+                            <option value="01">01</option>
+                            <option value="02">02</option>
+                            <option value="03">03</option>
+                            <option value="04">04</option>
+                            <option value="05">05</option>
+                            <option value="06">06</option>
+                            <option value="07">07</option>
+                            <option value="08">08</option>
+                            <option value="09">09</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="12">12</option>
+                        </select>
+                    </div>
+                    <div class="col">
+                        <select id="expiry-year" name="expiry_year" class="form-select" required>
+                            <option value="" disabled selected>Year</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="document-type">Document Type:</label>
+                <select id="document-type" name="document_type" class="form-select" required>
+                    <option value="" disabled selected>Select document type</option>
+                    <option value="driver_license">Driver License</option>
+                    <option value="electric_bill">Electric Bill</option>
+                    <option value="bank_document">Bank Document</option>
+                </select>
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="document-upload">Upload Document:</label>
+                <input type="file" id="document-upload" name="document_upload" class="form-control" accept=".pdf,.jpg,.jpeg,.png" required>
+            </div>
+
+            <button type="submit" class="submit-btn w-100">Submit</button>
+        </form>
+    </section>
+</main>
+
+<!-- Success Popup -->
+<div class="success-popup" id="successPopup">
+    <div class="popup-content">
+        <button class="btn-close" id="closePopup"></button>
+        <h2>{{ message }}</h2>
+    </div>
+</div>
+
+<!-- JavaScript Libraries -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const yearSelect = document.getElementById('expiry-year');
+        const currentYear = new Date().getFullYear();
+        for (let i = 0; i <= 10; i++) {
+            const year = currentYear + i;
+            const option = document.createElement('option');
+            option.value = year;
+            option.textContent = year;
+            yearSelect.appendChild(option);
+        }
+
+        const form = document.getElementById('upgradeForm');
+        const successPopup = document.getElementById('successPopup');
+        const closePopup = document.getElementById('closePopup');
+
+        form.addEventListener('submit', function (event) {
+            event.preventDefault();
+            successPopup.classList.add('show');
+
+            setTimeout(() => {
+                successPopup.classList.remove('show');
+                window.location.href = "{% url 'dashboard' %}";
+            }, 3000);
+        });
+
+        closePopup.addEventListener('click', function () {
+            successPopup.classList.remove('show');
+        });
+    });
+</script>
+
+</body>
+</html>

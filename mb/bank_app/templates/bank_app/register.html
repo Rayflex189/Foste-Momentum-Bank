@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register Page</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #470005, #f4f1c3); /* Dark red to light cream gradient */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .login-container {
+      background-color: rgba(255, 255, 255, 0.95); /* Slightly more opaque background */
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15); /* Deeper shadow for more focus */
+      text-align: center;
+      animation: slideIn 1s ease-out;
+      width: 380px;
+    }
+
+    h2 {
+      font-size: 28px;
+      color: #470005; /* Dark red color */
+      margin-bottom: 20px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    input{
+      width: 93%;
+      padding: 12px;
+      border-radius: 8px;
+      border: 2px solid #ddd;
+      font-size: 16px;
+      transition: all 0.3s ease;
+    }
+
+
+    button {
+      padding: 12px;
+      border-radius: 8px;
+      border: 2px solid #ddd;
+      font-size: 16px;
+      transition: all 0.3s ease;
+    }
+
+    input {
+      background-color: #f8f9fa;
+    }
+
+    input:focus {
+      border-color: #007bff;
+      outline: none;
+      box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
+    }
+
+    button {
+      background-color: #007bff;
+      color: white;
+      font-size: 18px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+      transform: translateY(-3px); /* Button hover animation */
+    }
+
+    .container {
+      margin-top: 15px;
+      font-size: 14px;
+    }
+
+    .fg {
+      color: #007bff;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .fg:hover {
+      text-decoration: underline;
+    }
+
+    /* Error animation */
+    .error {
+      color: red;
+      font-weight: bold;
+      animation: shake 0.5s infinite alternate;
+      margin-bottom: 15px;
+    }
+
+    @keyframes shake {
+      0% {
+        transform: translateX(0);
+      }
+      100% {
+        transform: translateX(5px);
+      }
+    }
+
+    /* Slide-in animation for the form */
+    @keyframes slideIn {
+      0% {
+        transform: translateY(-50px);
+        opacity: 0;
+      }
+      100% {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <h2>Register</h2>
+    <span id="confirmPasswordError" class="error">{{form.errors}}</span>
+    <form method="post" id="registerForm">
+      {% csrf_token %}
+      <div>
+        {{form.username}}
+      </div>
+      <div>
+        {{form.password1}}
+      </div>
+      <div>
+        {{form.password2}}
+      </div>
+      <button type="submit">Register</button>
+      <div class="container">
+        If you already have an account <a href="{% url 'LoginPage' %}" class="fg">Login</a>
+      </div>
+    </form>
+  </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const placeholders = ['', 'Username', 'Password', 'Confirm Password'];
+      const formInputs = document.querySelectorAll('#registerForm input');
+
+      formInputs.forEach(function(input, index) {
+        input.placeholder = placeholders[index];
+      });
+    });
+  </script>
+</body>
+</html>

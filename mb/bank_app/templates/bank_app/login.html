@@ -1,0 +1,197 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Page</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #470005, #f4f1c3); /* Dark red to light cream gradient */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .login-container {
+      background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent background */
+      border-radius: 15px;
+      padding: 40px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15); /* Deeper shadow */
+      text-align: center;
+      animation: slideIn 1s ease-out;
+      width: 380px;
+    }
+
+    h2 {
+      font-size: 28px;
+      color: #470005;
+      margin-bottom: 20px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    input {
+      padding: 12px;
+      border-radius: 8px;
+      border: 2px solid #ddd;
+      font-size: 16px;
+      transition: all 0.3s ease;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: 2px solid #ddd;
+      font-size: 16px;
+      transition: all 0.3s ease;
+    }
+
+    input {
+      background-color: #f8f9fa;
+    }
+
+    input:focus {
+      border-color: #007bff;
+      outline: none;
+      box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
+    }
+
+    button {
+      background-color: #007bff;
+      color: white;
+      font-size: 18px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+      transform: translateY(-3px);
+    }
+
+    .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      font-size: 14px;
+    }
+
+    .fg {
+      color: #007bff;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .fg:hover {
+      text-decoration: underline;
+    }
+
+    /* Social media icon styling */
+    .social-media {
+      margin-top: 20px;
+    }
+
+    .social-media img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      margin: 0 10px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .social-media img:hover {
+      transform: scale(1.2);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Animation for error messages */
+    .messages {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .messages li {
+      margin-bottom: 10px;
+      padding: 10px;
+      border-radius: 5px;
+      font-size: 16px;
+      animation: slideIn 0.5s ease forwards;
+      animation-delay: calc(0.1s * var(--index));
+    }
+
+    .success {
+      background-color: #28a745;
+      color: white;
+    }
+
+    .error {
+      background-color: #dc3545;
+      color: white;
+    }
+
+    .info {
+      background-color: #17a2b8;
+      color: white;
+    }
+
+    /* Slide-in animation */
+    @keyframes slideIn {
+      0% {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    {% if messages %}
+      <ul class="messages">
+        {% for message in messages %}
+          <li class="{{ message.tags }}" style="--index: {{ forloop.counter }}">
+            {{ message }}
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+    <h2>Login</h2>
+    <form method="post">
+      {% csrf_token %}
+      <input type="text" name="username" placeholder="Username" required>
+      <input type="password" name="password" placeholder="Password" required>
+      <button type="submit">Login</button>
+      <div class="container">
+        <div class="check">
+          <input type="checkbox" name="remember_me" id="rememberMe">
+          Remember me
+        </div>
+        <a href="{% url 'register' %}" class="fg">Sign up</a>
+      </div>
+    </form>
+    <!-- Social media icons -->
+    <div class="social-media">
+      <img class="img_sc" src="{% static 'images/fb-icon.png' %}" alt="Facebook">
+      <img class="img_sc" src="{% static 'images/twitter-icon.png' %}" alt="Twitter">
+      <img class="img_sc" src="{% static 'images/instagram-icon.png' %}" alt="Instagram">
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

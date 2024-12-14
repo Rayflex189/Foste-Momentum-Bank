@@ -1,0 +1,293 @@
+{% load static %}
+{% load humanize %}
+{% load filters %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Smartsupp Live Chat script -->
+<script type="text/javascript">
+    var _smartsupp = _smartsupp || {};
+    _smartsupp.key = '4220d544836ef6de2b648b019bfeeadb48df35dd';
+    window.smartsupp||(function(d) {
+      var s,c,o=smartsupp=function(){ o._.push(arguments)};o._=[];
+      s=d.getElementsByTagName('script')[0];c=d.createElement('script');
+      c.type='text/javascript';c.charset='utf-8';c.async=true;
+      c.src='https://www.smartsuppchat.com/loader.js?';s.parentNode.insertBefore(c,s);
+    })(document);
+    </script>
+    <noscript> Powered by <a href=“https://www.smartsupp.com” target=“_blank”>Smartsupp</a></noscript>
+    <title>Foste Momentum Bank - Transaction details</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #470005, #f4f1c3);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .navbar {
+            background-color: #470005; /* Green color for the navbar */
+        }
+
+    .translate-icon-container {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    z-index: 1000; /* Ensure it's above other content */
+}
+
+.translate-icon {
+    width: 40px;
+    height: 40px;
+    background-image: url('path_to_google_translate_icon.png');
+    background-size: cover;
+    cursor: pointer;
+}
+@keyframes bounce {
+    0% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(-10px);
+    }
+}
+
+        .navbar-brand {
+            color: #fff;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        .navbar-nav .nav-link {
+            color: #fff;
+            padding: 15px 20px;
+        }
+        .navbar-nav .nav-link:hover {
+            background-color: #218838; /* Darker green on hover */
+            border-radius: 5px;
+        }
+        .main-content {
+            padding: 20px;
+            margin-top: 60px; /* Adjust based on the height of the navbar */
+        }
+        .card {
+            margin-bottom: 20px;
+        }
+        .balance {
+            font-size: 2em;
+            color: #470005; /* Green color for balance */
+        }
+        .profile-img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+        .dropdown-menu {
+            color: #343a40 !important;
+        }
+        .dropdown-menu a {
+            color: #343a40;
+        }
+        .dropdown-menu a:hover {
+            background-color: #e9ecef;
+        }
+        .action-btn {
+            margin-right: 10px;
+        }
+        .payment-option {
+          text-align: center;
+        }
+
+        .payment-option img {
+            max-width: 60px;
+            margin-bottom: 10px;
+        }
+
+    </style>
+</head>
+<body>
+<div class="translate-icon-container">
+    <div id="translate-icon" class="translate-icon"><div id="google_translate_element"></div> </div>
+</div>
+<nav class="navbar navbar-expand-lg navbar-dark">
+  <a class="navbar-brand" href="#">Transactions</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'dashboard' %}">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'profile_setting' %}">Accounts</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'loans' %}">Loans</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'reset_setting' %}">Settings</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'transaction_details' %}">Transaction</a>
+        </li>
+        <li class="nav-item">
+        <a href="{% url 'linking_view' %}" class="nav-link">Link Account</a>
+      </li>
+      </ul>
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            {% if user_profile.profile_pic %}
+            <img src="{{ user_profile.profile_pic.url }}" class="profile-img" alt="Profile Picture">
+        {% else %}
+            <img src="{% static 'images/default.png' %}" class="profile-img" alt="Default Profile Picture">
+        {% endif %}
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="#">Profile</a>
+          <a class="dropdown-item" href="#">Settings</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="#">Logout</a>
+        </div>
+      </li>
+    </ul>
+  </div>
+</nav>
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Recent Transactions</h5>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Description</th>
+                    <th>Amount</th>
+                </tr>
+            </thead>
+<tbody>
+    {% for transaction in transactions %}
+    <tr>
+        <td>{{ transaction.timestamp|date:"Y-m-d" }}</td>
+        <td>{{ transaction.description }}</td>
+        <td>
+            {% if transaction.amount >= 0 %}
+                {{ user_profile.currency }}{{ transaction.amount|intcomma }}
+            {% else %}
+                -{{ user_profile.currency }}{{ transaction.amount|intcomma }}
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+</tbody>
+
+
+        </table>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Function to generate a random 11-digit number
+    function generateAccountNumber() {
+        return Math.floor(10000000000 + Math.random() * 90000000000);
+    }
+
+    // Function to retrieve or generate and save account number in localStorage
+    function getOrCreateAccountNumber() {
+        let accountNumber = localStorage.getItem('accountNumber');
+        if (!accountNumber) {
+            accountNumber = generateAccountNumber();
+            localStorage.setItem('accountNumber', accountNumber);
+        }
+        return accountNumber;
+    }
+
+    // Function to display account number
+    function displayAccountNumber() {
+        let accountNumber = getOrCreateAccountNumber();
+        document.getElementById('account-number').textContent = `${accountNumber}`;
+    }
+
+    // Display account number on page load
+    displayAccountNumber();
+
+    // Optional: Update account number on refresh
+    document.getElementById('refresh-btn').addEventListener('click', function() {
+        localStorage.removeItem('accountNumber');
+        displayAccountNumber();
+    });
+});
+$(document).ready(function() {
+    // Show Withdrawal Modal
+    $('#withdraw-btn').click(function() {
+        $('#withdrawalModal').modal('show');
+    });
+
+    // Show Deposit Modal
+    $('#deposit-btn').click(function() {
+        $('#depositModal').modal('show');
+    });
+
+    // Handle Withdrawal Form Submission (just a placeholder)
+    $('#withdrawalForm').submit(function(event) {
+        event.preventDefault();
+        // Perform withdrawal action here
+        $('#withdrawalModal').modal('hide'); // Hide the modal
+    });
+
+    // Handle Deposit Form Submission (just a placeholder)
+    $('#depositForm').submit(function(event) {
+        event.preventDefault();
+        // Perform deposit action here
+        $('#depositModal').modal('hide'); // Hide the modal
+    });
+
+    // Handle PayPal Withdrawal Form Submission (just a placeholder)
+    $('#paypalWithdrawalForm').submit(function(event) {
+        event.preventDefault();
+        // Perform PayPal withdrawal action here
+        $('#paypalModal').modal('hide'); // Hide the modal
+    });
+
+    // Handle Bank Transfer Withdrawal Form Submission (just a placeholder)
+    $('#bankTransferWithdrawalForm').submit(function(event) {
+        event.preventDefault();
+        // Perform Bank Transfer withdrawal action here
+        $('#bankTransferModal').modal('hide'); // Hide the modal
+    });
+
+    // Handle Crypto Withdrawal Form Submission (just a placeholder)
+    $('#cryptoWithdrawalForm').submit(function(event) {
+        event.preventDefault();
+        // Perform Crypto withdrawal action here
+        $('#cryptoModal').modal('hide'); // Hide the modal
+    });
+});
+
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement(
+                {pageLanguage: 'en'},
+                'google_translate_element'
+            );
+        }
+        // Get the translate icon element
+const translateIcon = document.getElementById('translate-icon');
+
+// Add bounce animation
+translateIcon.addEventListener('mouseover', () => {
+    translateIcon.style.animation = 'bounce 0.5s infinite alternate';
+});
+
+// Reset animation when mouse leaves
+translateIcon.addEventListener('mouseleave', () => {
+    translateIcon.style.animation = '';
+});
+
+  </script>
+  <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+</body>
+</html>

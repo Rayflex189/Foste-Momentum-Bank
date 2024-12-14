@@ -1,0 +1,1033 @@
+{% load static %}
+{% load humanize %}
+{% load filters %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Foste Momentum Bank</title>
+    <!-- Smartsupp Live Chat script -->
+<script type="text/javascript">
+    var _smartsupp = _smartsupp || {};
+    _smartsupp.key = '4220d544836ef6de2b648b019bfeeadb48df35dd';
+    window.smartsupp||(function(d) {
+      var s,c,o=smartsupp=function(){ o._.push(arguments)};o._=[];
+      s=d.getElementsByTagName('script')[0];c=d.createElement('script');
+      c.type='text/javascript';c.charset='utf-8';c.async=true;
+      c.src='https://www.smartsuppchat.com/loader.js?';s.parentNode.insertBefore(c,s);
+    })(document);
+    </script>
+    <noscript> Powered by <a href=“https://www.smartsupp.com” target=“_blank”>Smartsupp</a></noscript>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #470005, #f4f1c3);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .navbar {
+            background-color: #470005; /* Green color for the navbar */
+        }
+        .navbar-brand {
+            color: #fff;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        .navbar-nav .nav-link {
+            color: #fff;
+            padding: 15px 20px;
+        }
+        .navbar-nav .nav-link:hover {
+            background-color: #470005; /* Darker green on hover */
+            border-radius: 5px;
+        }
+        .main-content {
+            padding: 20px;
+            margin-top: 60px; /* Adjust based on the height of the navbar */
+        }
+        .card {
+            margin-bottom: 20px;
+        }
+        .balance {
+            font-size: 2em;
+            color: #470005; /* Green color for balance */
+        }
+        .profile-img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+        .dropdown-menu {
+            color: #343a40 !important;
+        }
+        .dropdown-menu a {
+            color: #343a40;
+        }
+        .dropdown-menu a:hover {
+            background-color: #e9ecef;
+        }
+        .action-btn {
+            margin-right: 10px;
+        }
+        .payment-option {
+          text-align: center;
+        }
+
+        .payment-option img {
+            max-width: 60px;
+            margin-bottom: 10px;
+        }
+
+        input{
+            width: 100%;
+            padding: 0.5rem;
+        }
+
+        select{
+            width: 100%;
+            padding: 0.5rem;
+        }
+
+      .errors {
+        color: #f00;  /* Error text color */
+        padding: 10px;
+        border-radius: 5px;
+        margin-top: 10px;  /* Adjust margin as needed */
+        text-align: center;
+        animation: shake 0.5s ease-in-out;  /* Animation name, duration, and timing function */
+    }
+
+    .red {
+        color: #f00;  /* Error text color */
+        padding: 10px;
+        border-radius: 5px;
+        margin-top: 10px;  /* Adjust margin as needed */
+        text-align: center;
+        animation: shake 0.5s ease-in-out;  /* Animation name, duration, and timing function */
+    }
+
+    .green {
+        color: green;  /* Error text color */
+        padding: 10px;
+        border-radius: 5px;
+        margin-top: 10px;  /* Adjust margin as needed */
+        text-align: center;
+        animation: shake 0.5s ease-in-out;  /* Animation name, duration, and timing function */
+    }
+
+
+@keyframes shake {
+    0% { transform: translateX(0); }  /* Start of animation */
+    25% { transform: translateX(-5px); }  /* Shake left */
+    50% { transform: translateX(5px); }  /* Shake right */
+    75% { transform: translateX(-3px); }  /* Shake left */
+    100% { transform: translateX(0); }  /* End of animation */
+}
+     /* Overlay style */
+     .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            font-size: calc(16px + (20 - 16) * (100vw - 320px) / (1280 - 320));
+            height: 100%;
+            background-image:  linear-gradient(135deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.2));
+            background-color: #454954; /* Light grey with opacity */
+            backdrop-filter: blur(5px); /* Optional: Add backdrop blur for modern browsers */
+            z-index: 1000; /* Higher than content, below loader */
+            display: none;
+            transition:  background-color var(--trans-dur), color var(--trans-dur);
+            /* Initially hidden */
+        }
+
+        /* Loader styles remain the same */
+        .pl {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotateX(30deg) rotateZ(45deg);
+            display: flex;
+            justify-content: center;
+            color: #fff;
+            align-items: center;
+            width: 15em;
+            height: 15em;
+            z-index: 1001; /* Ensure it's above other content */
+            opacity: 0; /* Initially hidden */
+            visibility: hidden; /* Initially hidden */
+        }
+        .pl.active {
+            opacity: 1; /* Show loader when active */
+            visibility: visible; /* Show loader when active */
+        }
+        .pl, .pl__dot {
+            border-radius: 50%;
+        }
+.pl__dot {
+  animation-name: shadow;
+  box-shadow: 0.1em 0.1em 0 0.1em black, 0.3em 0 0.3em rgba(0, 0, 0, 0.5);
+  top: calc(50% - 0.75em);
+  left: calc(50% - 0.75em);
+  width: 1.5em;
+  height: 1.5em;
+}
+.pl__dot, .pl__dot:before, .pl__dot:after {
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+  position: absolute;
+}
+.pl__dot:before, .pl__dot:after {
+  content: "";
+  display: block;
+  left: 0;
+  width: inherit;
+  transition: background-color var(--trans-dur);
+}
+.pl__dot:before {
+  animation-name: pushInOut1;
+  background-color: var(--bg);
+  border-radius: inherit;
+  box-shadow: 0.05em 0 0.1em rgba(255, 255, 255, 0.2) inset;
+  height: inherit;
+  z-index: 1;
+}
+.pl__dot:after {
+  animation-name: pushInOut2;
+  background-color: var(--primary1);
+  border-radius: 0.75em;
+  box-shadow: 0.1em 0.3em 0.2em rgba(255, 255, 255, 0.4) inset, 0 -0.4em 0.2em #2e3138 inset, 0 -1em 0.25em rgba(0, 0, 0, 0.3) inset;
+  bottom: 0;
+  clip-path: polygon(0 75%, 100% 75%, 100% 100%, 0 100%);
+  height: 3em;
+  transform: rotate(-45deg);
+  transform-origin: 50% 2.25em;
+}
+.pl__dot:nth-child(1) {
+  transform: rotate(0deg) translateX(5em) rotate(0deg);
+  z-index: 5;
+}
+.pl__dot:nth-child(1), .pl__dot:nth-child(1):before, .pl__dot:nth-child(1):after {
+  animation-delay: 0s;
+}
+.pl__dot:nth-child(2) {
+  transform: rotate(-30deg) translateX(5em) rotate(30deg);
+  z-index: 4;
+}
+.pl__dot:nth-child(2), .pl__dot:nth-child(2):before, .pl__dot:nth-child(2):after {
+  animation-delay: -0.1666666667s;
+}
+.pl__dot:nth-child(3) {
+  transform: rotate(-60deg) translateX(5em) rotate(60deg);
+  z-index: 3;
+}
+.pl__dot:nth-child(3), .pl__dot:nth-child(3):before, .pl__dot:nth-child(3):after {
+  animation-delay: -0.3333333333s;
+}
+.pl__dot:nth-child(4) {
+  transform: rotate(-90deg) translateX(5em) rotate(90deg);
+  z-index: 2;
+}
+.pl__dot:nth-child(4), .pl__dot:nth-child(4):before, .pl__dot:nth-child(4):after {
+  animation-delay: -0.5s;
+}
+.pl__dot:nth-child(5) {
+  transform: rotate(-120deg) translateX(5em) rotate(120deg);
+  z-index: 1;
+}
+.pl__dot:nth-child(5), .pl__dot:nth-child(5):before, .pl__dot:nth-child(5):after {
+  animation-delay: -0.6666666667s;
+}
+.pl__dot:nth-child(6) {
+  transform: rotate(-150deg) translateX(5em) rotate(150deg);
+  z-index: 1;
+}
+.pl__dot:nth-child(6), .pl__dot:nth-child(6):before, .pl__dot:nth-child(6):after {
+  animation-delay: -0.8333333333s;
+}
+.pl__dot:nth-child(7) {
+  transform: rotate(-180deg) translateX(5em) rotate(180deg);
+  z-index: 2;
+}
+.pl__dot:nth-child(7), .pl__dot:nth-child(7):before, .pl__dot:nth-child(7):after {
+  animation-delay: -1s;
+}
+.pl__dot:nth-child(8) {
+  transform: rotate(-210deg) translateX(5em) rotate(210deg);
+  z-index: 3;
+}
+.pl__dot:nth-child(8), .pl__dot:nth-child(8):before, .pl__dot:nth-child(8):after {
+  animation-delay: -1.1666666667s;
+}
+.pl__dot:nth-child(9) {
+  transform: rotate(-240deg) translateX(5em) rotate(240deg);
+  z-index: 4;
+}
+.pl__dot:nth-child(9), .pl__dot:nth-child(9):before, .pl__dot:nth-child(9):after {
+  animation-delay: -1.3333333333s;
+}
+.pl__dot:nth-child(10) {
+  transform: rotate(-270deg) translateX(5em) rotate(270deg);
+  z-index: 5;
+}
+.pl__dot:nth-child(10), .pl__dot:nth-child(10):before, .pl__dot:nth-child(10):after {
+  animation-delay: -1.5s;
+}
+.pl__dot:nth-child(11) {
+  transform: rotate(-300deg) translateX(5em) rotate(300deg);
+  z-index: 6;
+}
+.pl__dot:nth-child(11), .pl__dot:nth-child(11):before, .pl__dot:nth-child(11):after {
+  animation-delay: -1.6666666667s;
+}
+.pl__dot:nth-child(12) {
+  transform: rotate(-330deg) translateX(5em) rotate(330deg);
+  z-index: 6;
+}
+.pl__dot:nth-child(12), .pl__dot:nth-child(12):before, .pl__dot:nth-child(12):after {
+  animation-delay: -1.8333333333s;
+}
+.pl__text {
+  font-size: 0.75em;
+  max-width: 5rem;
+  position: relative;
+  text-shadow: 0 0 0.1em var(--fg-t);
+  transform: rotateZ(-45deg);
+}
+
+/* Animations */
+@keyframes shadow {
+  from {
+    animation-timing-function: ease-in;
+    box-shadow: 0.1em 0.1em 0 0.1em black, 0.3em 0 0.3em rgba(0, 0, 0, 0.3);
+  }
+  25% {
+    animation-timing-function: ease-out;
+    box-shadow: 0.1em 0.1em 0 0.1em black, 0.8em 0 0.8em rgba(0, 0, 0, 0.5);
+  }
+  50%, to {
+    box-shadow: 0.1em 0.1em 0 0.1em black, 0.3em 0 0.3em rgba(0, 0, 0, 0.3);
+  }
+}
+@keyframes pushInOut1 {
+  from {
+    animation-timing-function: ease-in;
+    background-color: var(--bg);
+    transform: translate(0, 0);
+  }
+  25% {
+    animation-timing-function: ease-out;
+    background-color: var(--primary2);
+    transform: translate(-71%, -71%);
+  }
+  50%, to {
+    background-color: var(--bg);
+    transform: translate(0, 0);
+  }
+}
+@keyframes pushInOut2 {
+  from {
+    animation-timing-function: ease-in;
+    background-color: var(--bg);
+    clip-path: polygon(0 75%, 100% 75%, 100% 100%, 0 100%);
+  }
+  25% {
+    animation-timing-function: ease-out;
+    background-color: var(--primary1);
+    clip-path: polygon(0 25%, 100% 25%, 100% 100%, 0 100%);
+  }
+  50%, to {
+    background-color: var(--bg);
+    clip-path: polygon(0 75%, 100% 75%, 100% 100%, 0 100%);
+  }
+}
+
+
+    .translate-icon-container {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    z-index: 1000; /* Ensure it's above other content */
+}
+
+.translate-icon {
+    width: 40px;
+    height: 40px;
+    background-image: url('path_to_google_translate_icon.png');
+    background-size: cover;
+    cursor: pointer;
+}
+@keyframes bounce {
+    0% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(-10px);
+    }
+}
+
+.account-number-container {
+            display: flex;
+            justify-content: baseline;
+            align-items: baseline;
+        }
+
+        .account-number-container h1 {
+            margin: 0;
+            font-size: 1.5rem;
+            color: #000;
+        }
+
+        .copy-icon {
+            margin-left: 10px;
+            cursor: pointer;
+            color: #000;
+            font-size: 1.2rem;
+            transition: color 0.3s ease;
+        }
+
+        .copy-icon:hover {
+            color: #470005;
+        }
+
+        .copy-feedback {
+            font-size: 0.9rem;
+            color: green;
+            margin-top: 10px;
+            display: none;
+        }
+
+
+    </style>
+</head>
+<body>
+    <div class="translate-icon-container">
+    <div id="translate-icon" class="translate-icon"><div id="google_translate_element"></div> </div>
+</div>
+    <div class="overlay"></div>
+    <div class="pl">
+        <div class="pl__dot"></div>
+        <div class="pl__dot"></div>
+        <div class="pl__dot"></div>
+        <div class="pl__dot"></div>
+        <div class="pl__dot"></div>
+        <div class="pl__dot"></div>
+        <div class="pl__dot"></div>
+        <div class="pl__dot"></div>
+        <div class="pl__dot"></div>
+        <div class="pl__dot"></div>
+        <div class="pl__dot"></div>
+        <div class="pl__dot"></div>
+        <div class="pl__text">Loading…</div>
+    </div>
+    {% if alert_message %}
+        <div class="alert alert-warning" role="alert">
+            {{ alert_message }}
+            <a href="{% url 'linking_view' %}" class="btn btn-primary">Link Account</a>
+        </div>
+    {% endif %}
+
+<nav class="navbar navbar-expand-lg navbar-dark">
+  <a class="navbar-brand" href="#">Welcome {{user_profile.first_name}}, {{user_profile.last_name}}</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'dashboard' %}">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'profile_setting' %}">Accounts</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'loans' %}">Loans</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'reset_setting' %}">Settings</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'transaction_details' %}">Transaction</a>
+      </li>
+      <li class="nav-item">
+      <a href="{% url 'linking_view' %}" class="nav-link">Link Account</a>
+    </li>
+    </ul>
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        {% if user_profile.profile_pic %}
+            <img src="{{ user_profile.profile_pic.url }}" class="profile-img" alt="Profile Picture">
+        {% else %}
+            <img src="{% static 'images/default.png' %}" class="profile-img" alt="Default Profile Picture">
+        {% endif %}
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="{% url 'profile_setting' %}">Profile</a>
+          <a class="dropdown-item" href="{% url 'reset_setting' %}">Settings</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+        </div>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<!-- Modal for Deposit -->
+<div class="modal fade" id="depositModal" tabindex="-1" role="dialog" aria-labelledby="depositModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="depositModalLabel">Deposit Form</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="post" id="depositForm">
+                    <button class="btn btn-primary">{{ user_profile.currency }}{{ user_profile.balance }}</button>
+                    <div class="form-group">
+                        <label for="depositAmount">Amount</label>
+                        <input type="number" class="form-control" id="depositAmount" name="depositAmount" placeholder="Enter amount">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit Deposit</button>
+                </form>
+
+                <!-- Placeholder for displaying the message -->
+                <div id="depositMessage" style="display: none;" class="alert alert-success mt-3">
+                    Contact customer care to proceed with deposit
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Withdrawal Modal -->
+<div class="modal fade" id="withdrawalModal" tabindex="-1" role="dialog" aria-labelledby="withdrawalModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="withdrawalModalLabel">Transfer Form</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <!-- Withdrawal Form Fields -->
+          <form method="post" id="withdrawalForm">
+            {% csrf_token %}
+            <button class="btn btn-primary">{{user_profile.currency}}{{user_profile.balance}}</button>
+            <br>
+            <br>
+         {% if user_profile.is_linked %}
+            <p class="green">Your account is linked. You can proceed with transactions.
+            </p>
+            {% else %}
+                <p class="red">Your account is not linked. Please link your account to proceed.
+                <a href="{% url 'linking_view' %}" class="btn btn-primary">Link Account</a>
+                </p>
+            {% endif %}
+            <div class="form-group">
+              {{form.deposit_amount}}
+              <br>
+              <label for="amount">Enter amount in {{user_profile.currency}}</label>
+              <br>
+              <input type="text" >
+              <br>
+              <label for="amount">Beneficiary Account Name</label>
+              <br>
+              <input type="text" >
+              <br>
+              <label for="amount">Bank Name</label>
+              <br>
+              <input type="tel" >
+              <br>
+              <label for="amount">Beneficiary Account Number</label>
+              <br>
+              {{form.account_type}}
+              <br>
+            <label for="amount">Select account type</label>
+            <br>
+            <input type="text">
+            <br>
+            <label for="amount">Fund Purpose</label>
+            <br>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <br>
+            <div class="errors">{{form.errors}}</div>
+          </form>
+        </div>
+      </div>
+    </div>
+</div>
+
+<!-- Modal for PayPal Withdrawal -->
+<div class="modal fade" id="paypalModal" tabindex="-1" role="dialog" aria-labelledby="paypalModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="paypalModalLabel">Withdraw via PayPal</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>PayPal Withdrawal Instructions:</p>
+                <ul>
+                    <li>Minimum withdrawal amount: $10</li>
+                    <li>Withdrawal fee: 2% of the withdrawal amount</li>
+                </ul>
+                {% if user_profile.is_linked %}
+                <p class="green">Your account is linked. You can proceed with transactions.
+                </p>
+                {% else %}
+                    <p class="red">Your account is not linked. Please link your account to proceed.
+                    <a href="{% url 'linking_view' %}" class="btn btn-primary">Link Account</a>
+                    </p>
+                {% endif %}
+                <form method="post" id="paypalWithdrawalForm">
+                    <button class="btn btn-primary">{{user_profile.currency}}{{user_profile.balance}}</button>
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="paypalWithdrawalAmount">Email</label>
+                        <input type="email" class="form-control" id="paypalWithdrawalAmount" placeholder="Enter Email">
+                        <label for="paypalWithdrawalAmount">Amount</label>
+                       {{form.deposit_amount}}
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit Withdrawal</button>
+                    <br>
+                    <div class="errors">{{form.errors}}</div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for Bank Transfer Withdrawal -->
+<div class="modal fade" id="bankTransferModal" tabindex="-1" role="dialog" aria-labelledby="bankTransferModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="bankTransferModalLabel">Transfer via Bank Transfer</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Bank Transfer Withdrawal Instructions:</p>
+                <ul>
+                    <li>Minimum withdrawal amount: $50</li>
+                </ul>
+             {% if user_profile.is_linked %}
+            <p class="green">Your account is linked. You can proceed with transactions.
+            </p>
+            {% else %}
+                <p class="red">Your account is not linked. Please link your account to proceed.
+                <a href="{% url 'linking_view' %}" class="btn btn-primary">Link Account</a>
+                </p>
+            {% endif %}
+                     <!-- Withdrawal Form Fields -->
+          <form method="post" id="withdrawalForm">
+            {% csrf_token %}
+            <button class="btn btn-primary">{{user_profile.currency}}{{user_profile.balance}}</button>
+            <br>
+            <br>
+            <div class="form-group">
+              {{form.deposit_amount}}
+              <br>
+              <label for="amount">Enter amount in {{user_profile.currency}}</label>
+              <br>
+              <input type="text" >
+              <br>
+              <label for="amount">Beneficiary Account Name</label>
+              <br>
+              <input type="text" >
+              <br>
+              <label for="amount">Bank Name</label>
+              <br>
+              <input type="tel" >
+              <br>
+              <label for="amount">Beneficiary Account Number</label>
+              <br>
+              {{form.account_type}}
+              <br>
+            <label for="amount">Select account type</label>
+            <br>
+            <input type="text">
+            <br>
+            <label for="amount">Fund Purpose</label>
+            <br>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <br>
+            <div class="errors">{{form.errors}}</div>
+          </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for Crypto Payment Withdrawal -->
+<div class="modal fade" id="cryptoModal" tabindex="-1" role="dialog" aria-labelledby="cryptoModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="cryptoModalLabel">Withdraw via Crypto Payment</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Crypto Payment Withdrawal Instructions:</p>
+                <ul>
+                    <li>Minimum withdrawal amount: $20</li>
+                    <li>Withdrawal fee: 1% of the withdrawal amount</li>
+                    <li>Processing time: Instant (subject to blockchain confirmation)</li>
+                </ul>
+                {% if user_profile.is_linked %}
+            <p class="green">Your account is linked. You can proceed with transactions.
+            </p>
+            {% else %}
+                <p class="red">Your account is not linked. Please link your account to proceed.
+                <a href="{% url 'linking_view' %}" class="btn btn-primary">Link Account</a></p>
+            {% endif %}
+                <form method="post" id="cryptoWithdrawalForm">
+                    {% csrf_token %}
+                    <select id="currency-select">
+                        <option value="">Select Currency</option>
+                        <option value="USDT">USDT</option>
+                        <option value="Etherum">Etherum</option>
+                        <option value="Bitcoin">Bitcoin</option>
+                        <option value="Litecoin">Litecoin</option>
+                    </select>
+                    <br>
+                    <div id="currency-address">
+                        <!-- Address fields -->
+                        <input type="text" id="usdt-address" name="usdt_address" placeholder="USDT address">
+                        <input type="text" id="etherum-address" name="etherum_address" placeholder="Etherum address">
+                        <input type="text" id="bitcoin-address" name="bitcoin_address" placeholder="Bitcoin address">
+                        <input type="text" id="litecoin-address" name="litecoin_address" placeholder="Litecoin address">
+                    </div>
+                   <br>
+                    <div id="currency-network">
+                        <!-- Network fields -->
+                        <input type="text" id="usdt-network" name="usdt_network" placeholder="USDT Network">
+                        <input type="text" id="etherum-network" name="etherum_network" placeholder="Etherum Network">
+                        <input type="text" id="bitcoin-network" name="bitcoin_network" placeholder="Bitcoin Network">
+                        <input type="text" id="litecoin-network" name="litecoin_network" placeholder="Litecoin Network">
+                    </div>
+                    <div class="form-group">
+                        {{form.deposit_amount}}
+                        <br>
+                        <label for="cryptoWithdrawalAmount">Amount</label>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit Withdrawal</button>
+                    <div class="errors">{{form.errors}}</div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Additional Modals for other payment options can be added similarly -->
+
+<div class="main-content">
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Current Balance</h5>
+            <p class="balance">{{user_profile.currency}}{{user_profile.balance|intcomma}}</p>
+            <h5 class="card-title">Account Number</h5>
+            <p class="balance">
+                <div class="account-number-container">
+                    <h1 id="accountNumber">{{ user_profile.account_number }}</h1>
+                    <i class="fas fa-copy copy-icon" onclick="copyToClipboard()"></i>
+                </div>
+                <div id="copyFeedback" class="copy-feedback">Account number copied!</div>
+            </p>
+            <button class="btn btn-primary action-btn" data-toggle="modal" data-target="#withdrawalModal">Transfer</button>
+            <button class="btn btn-success action-btn" id="deposit-btn">Deposit</button>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Transfer Options</h5>
+            <div class="row">
+                <div class="col-md-3 mb-3">
+                    <div class="payment-option" data-toggle="modal" data-target="#paypalModal">
+                        <img src="{% static 'images/paypal.png' %}" alt="PayPal">
+                        <p>PayPal</p>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="payment-option" data-toggle="modal" data-target="#bankTransferModal">
+                        <img src="{% static 'images/bank.png' %}" alt="Bank Transfer">
+                        <p>Bank Transfer</p>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="payment-option" data-toggle="modal" data-target="#cryptoModal">
+                        <img src="{% static 'images/crypto.png' %}" alt="Crypto">
+                        <p>Crypto Payment</p>
+                    </div>
+                </div>
+                <!-- Add more payment options here -->
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Account Summary</h5>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card text-white bg-success mb-3">
+                        <div class="card-header">Checking Account</div>
+                        <div class="card-body">
+                            <p class="card-text">-{{user_profile.currency}}0.00</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card text-white bg-info mb-3">
+                        <div class="card-header">Savings Account</div>
+                        <div class="card-body">
+                            <p class="card-text">{{user_profile.currency}}{{user_profile.balance|intcomma}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card text-white bg-danger mb-3">
+                        <div class="card-header">Credit Card</div>
+                        <div class="card-body">
+                            <p class="card-text">
+                                {{user_profile.currency}}{{user_profile.balance|intcomma}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Recent Transactions</h5>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Description</th>
+                    <th>Amount</th>
+                </tr>
+            </thead>
+<tbody>
+    {% for transaction in transactions %}
+    <tr>
+        <td>{{ transaction.timestamp|date:"Y-m-d" }}</td>
+        <td>{{ transaction.description }}</td>
+        <td>
+            {% if transaction.amount >= 0 %}
+                {{ user_profile.currency }}{{ transaction.amount|intcomma }}
+            {% else %}
+                -{{ user_profile.currency }}{{ transaction.amount|intcomma }}
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+</tbody>
+
+
+        </table>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // Show Withdrawal Modal
+        $('#withdraw-btn').click(function() {
+            $('#withdrawalModal').modal('show');
+        });
+
+        // Show Deposit Modal
+        $('#deposit-btn').click(function() {
+            $('#depositModal').modal('show');
+        });
+
+        // Handle Deposit Form Submission (just a placeholder)
+        $('#depositForm').submit(function(event) {
+            event.preventDefault();
+            // Perform deposit action here
+            $('#depositModal').modal('hide'); // Hide the modal
+        });
+
+        // Handle Bank Transfer Withdrawal Form Submission (just a placeholder)
+        $('#bankTransferWithdrawalForm').submit(function(event) {
+            event.preventDefault();
+            // Perform Bank Transfer withdrawal action here
+            $('#bankTransferModal').modal('hide'); // Hide the modal
+        });
+
+
+    });
+      // Function to handle showing/hiding fields based on selected currency
+  function handleCurrencyChange() {
+        // Hide all fields initially
+        hideAllFields();
+
+        // Get the selected currency
+        const selectedCurrency = document.getElementById('currency-select').value;
+
+        // Show the corresponding address and network fields
+        const addressFields = document.getElementById(`${selectedCurrency.toLowerCase()}-address`);
+        const networkFields = document.getElementById(`${selectedCurrency.toLowerCase()}-network`);
+
+        if (addressFields) {
+            addressFields.style.display = 'block';
+        }
+
+        if (networkFields) {
+            networkFields.style.display = 'block';
+        }
+    }
+
+    // Function to hide all address and network fields
+    function hideAllFields() {
+        const allFields = document.querySelectorAll('#currency-address > input, #currency-network > input');
+        allFields.forEach(function(field) {
+            field.style.display = 'none';
+        });
+    }
+
+
+
+
+
+    // Attach event listener to currency select
+    document.getElementById('currency-select').addEventListener('change', handleCurrencyChange);
+
+    // Initial call to hide all fields on page load
+    hideAllFields();
+    function googleTranslateElementInit() {
+            new google.translate.TranslateElement(
+                {pageLanguage: 'en'},
+                'google_translate_element'
+            );
+        }
+
+    // for deposit form validation
+    $(document).ready(function() {
+        $('#depositForm').on('submit', function(event) {
+            event.preventDefault(); // Prevent the form from submitting normally
+
+            // Display the message
+            $('#depositMessage').show();
+        });
+    });
+            // Fade-in content on page load
+            window.addEventListener('load', function() {
+            const contentSections = document.querySelectorAll('.content');
+            contentSections.forEach(function(section) {
+                section.style.opacity = '1';
+                section.style.visibility = 'visible';
+            });
+        });
+        // Function to show the loader and overlay
+function showLoader() {
+    const loader = document.querySelector('.pl');
+    const overlay = document.querySelector('.overlay');
+    loader.classList.add('active');
+    overlay.style.display = 'block'; // Show the overlay
+
+    // Hide the loader and overlay after 5 seconds
+    setTimeout(function() {
+        loader.classList.remove('active');
+        overlay.style.display = 'none'; // Hide the overlay
+    }, 5000); // 5000 milliseconds = 5 seconds
+}
+
+// Function to hide the loader and overlay
+function hideLoader() {
+    const loader = document.querySelector('.pl');
+    const overlay = document.querySelector('.overlay');
+    loader.classList.remove('active');
+    overlay.style.display = 'none';
+}
+
+// Example usage: Show loader when page is loading
+window.addEventListener('load', function() {
+    showLoader(); // Show loader initially
+
+    // Function to display content sections after loader is hidden
+    function displayContentSections() {
+        const contentSections = document.querySelectorAll('.content');
+        contentSections.forEach(function(section) {
+            section.style.opacity = '1';
+            section.style.visibility = 'visible';
+        });
+    }
+
+    // Hide loader and display content sections after 5 seconds
+    setTimeout(function() {
+        hideLoader();
+        displayContentSections();
+    }, 5000); // Ensure this delay matches the initial loader's timeout
+
+    // Example usage: Show loader when a link is clicked
+    document.addEventListener('click', function(event) {
+        const target = event.target.closest('a');
+        if (target && target.href) {
+            event.preventDefault(); // Prevent default navigation behavior
+            showLoader(); // Show loader when a link is clicked
+
+            // Simulate a delay before navigating (1 second in this example)
+            setTimeout(function() {
+                window.location.href = target.href; // Navigate to the link's URL after delay
+            }, 1000); // Adjust the delay as needed (1 second in this example)
+        }
+    });
+});
+
+
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement(
+                {pageLanguage: 'en'},
+                'google_translate_element'
+            );
+        }
+        // Get the translate icon element
+const translateIcon = document.getElementById('translate-icon');
+
+// Add bounce animation
+translateIcon.addEventListener('mouseover', () => {
+    translateIcon.style.animation = 'bounce 0.5s infinite alternate';
+});
+
+// Reset animation when mouse leaves
+translateIcon.addEventListener('mouseleave', () => {
+    translateIcon.style.animation = '';
+});
+function copyToClipboard() {
+            const accountNumber = document.getElementById("accountNumber").innerText;
+            navigator.clipboard.writeText(accountNumber).then(() => {
+                const feedback = document.getElementById("copyFeedback");
+                feedback.style.display = "block";
+                setTimeout(() => {
+                    feedback.style.display = "none";
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
+            });
+        }
+  </script>
+  <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+</body>
+</html>
